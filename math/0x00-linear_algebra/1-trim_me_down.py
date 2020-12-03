@@ -2,6 +2,5 @@
 matrix = [[1, 3, 9, 4, 5, 8], [2, 4, 7, 3, 4, 0], [0, 3, 4, 6, 1, 5]]
 the_middle = []
 for row in matrix:
-    mid = int(len(row) / 2)
-    the_middle.append(row[mid - 1 : mid + 1])
+    the_middle.append(row[2:4])
 print("The middle columns of the matrix are: {}".format(the_middle))
