@@ -1,3 +1,7 @@
+#!/usr/bin/env python3
+""" Concatenates two matrices along a specific axis """
+
+
 def get_length(rows):
     """Recursive function used to calculate the length
     Returns:
