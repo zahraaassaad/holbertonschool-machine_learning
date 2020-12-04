@@ -1,26 +1,24 @@
+#!/usr/bin/env python3
+
+"""
+Module for cat_matrices.
+"""
+
+
 def get_length(rows):
-    """Recursive function used to calculate the length
-    Returns:
-        List with the length
-    """
+    """Recursive function returns list with length."""
     if rows and (type(rows) is list or type(rows) is tuple):
         return [len(rows), *get_length(rows[0])]
     return []
 
 
 def matrix_shape(matrix):
-    """Calculates the shape of a matrix
-    Returns:
-        List with the shape of the matrix
-    """
+    """Calculates the shape of a matrix."""
     return [*get_length(matrix)]
 
 
 def concatenate_rows(row1, row2, axis):
-    """Concatenates rows recursively
-    Returns:
-        List or matrix concatenated
-    """
+    """Concatenates rows."""
     if axis == 0:
         return row1 + row2
 
@@ -29,11 +27,7 @@ def concatenate_rows(row1, row2, axis):
 
 
 def cat_matrices(mat1, mat2, axis=0):
-    """ Concatenates two matrices along a specific axis
-    Returns:
-        New concatenated matrix
-    """
-
+    """ Concatenates two matrices along a specific axis."""
     shape_matrix1 = matrix_shape(mat1)
     shape_matrix2 = matrix_shape(mat2)
 
