@@ -15,11 +15,7 @@ def poly_integral(poly, C=0):
     if len(poly) == 1:
         new_L[1] = poly[0]
         return new_L
-    if poly is None:
-        return None
     while i < len(new_L):
-        if type(i) != int:
-            return None
         if poly[i - 1] % i == 0:
             new_L[i] = int(poly[i - 1] / (i))
         else:
