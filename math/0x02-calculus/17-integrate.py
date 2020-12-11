@@ -4,7 +4,7 @@
 
 def poly_integral(poly, C=0):
     """Module for integral."""
-    new_L = list(range(len(poly)+1))
+    new_L = []
     i = 0
 
     if type(poly) != list or len(poly) == 0 or type(C) != int:
