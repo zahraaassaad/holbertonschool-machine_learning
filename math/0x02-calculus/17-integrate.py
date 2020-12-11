@@ -4,21 +4,21 @@
 
 def poly_integral(poly, C=0):
     """Module for integral."""
-    inte = []
+    new_L = list(range(len(poly)+1))
     i = 0
 
     if type(poly) != list or len(poly) == 0 or type(C) != int:
         return None
-    inte.append(C)
+    new_L.append(C)
     if sum(poly) == 0:
-        return inte
+        return new_L
     if len(poly) == 1:
-        inte.append(poly[0])
-        return inte
+        new_L.append(poly[0])
+        return new_L
     while i < len(poly):
         if poly[i] % (i + 1) == 0:
-            inte.append(int(poly[i]/(i + 1)))
+            new_L.append(int(poly[i]/(i + 1)))
         else:
-            inte.append(poly[i]/(i + 1))
+            new_L.append(poly[i]/(i + 1))
         i += 1
-    return inte
+    return new_L
