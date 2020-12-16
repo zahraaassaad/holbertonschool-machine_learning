@@ -39,7 +39,7 @@ class Normal:
         """Calculates the value of the PDF."""
         return (2.7182818285**((-1/2) * (((
             x - self.mean) / self.stddev)**2))) * (
-            1 / (self.stddev * (2 * self.PI)**(1/2)))
+            1 / (self.stddev * (2 * 3.1415926536) ** (1/2)))
 
     def cdf(self, x):
         """Calculates the value of the CDF."""
