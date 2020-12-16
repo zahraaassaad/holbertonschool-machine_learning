@@ -21,18 +21,12 @@ class Exponential:
                 raise ValueError("data must contain multiple values")
             self.lambtha = len(data) / sum(data)
 
-    def pmf(self, k):
-        """Calculates the value of the PMF."""
-        if k < 0:
+    def pdf(self, x):
+        """Calculates the value of the PDF."""
+        if x < 0:
             return 0
-        if not isinstance(k, int):
-            k = int(k)
-        k_factorial = 1
-        if k != 0:
-            for i in range(2, k+1):
-                k_factorial = k_factorial * i
-        return ((self.lambtha ** (k)) *
-                (2.7182818285 ** (-(self.lambtha)))) / k_factorial
+        return ((self.lambtha) *
+                (2.7182818285 ** (-(self.lambtha) * x)))
 
     def cdf(self, k):
         """Calculates the value of the CDF."""
