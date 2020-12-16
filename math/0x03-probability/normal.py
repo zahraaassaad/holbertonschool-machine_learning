@@ -34,3 +34,9 @@ class Normal:
     def x_value(self, z):
         """Calculates the x-score."""
         return self.stddev * z + self.mean
+
+    def pdf(self, x):
+        """Calculates the value of the PDF."""
+        return (2.7182818285**((-1/2) * (((
+            x - self.mean) / self.stddev)**2))) * (
+            1 / (self.stddev * (2 * self.PI)**(1/2)))
