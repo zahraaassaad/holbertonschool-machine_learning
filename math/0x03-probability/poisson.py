@@ -23,13 +23,13 @@ class Poisson:
 
     def pmf(self, k):
         """Calculates the value of the PMF."""
-        if not isinstance(k, int):
-            k = int(k)
         if k < 0:
             return 0
+        if not isinstance(k, int):
+            k = int(k)
         k_factorial = 1
         if k != 0:
-            for i in range(1, k+1):
+            for i in range(2, k+1):
                 k_factorial = k_factorial * i
-        return ((self.lambtha ** k) *
+        return ((self.lambtha ** (k)) *
                 (2.7182818285 ** (-(self.lambtha)))) / k_factorial
