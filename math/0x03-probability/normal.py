@@ -8,6 +8,15 @@ Module defining normal distribution
 class Normal:
     """ Normal class. It defines normal distribution.
     """
+
+    PI = 3.1415926536
+    
+    @classmethod
+    def get_erf(cls, x):
+        seq = x - ((x ** 3)/3) + ((x ** 5)/10) - ((x ** 7)/42) + ((x ** 9)/216)
+        erf = (2/(cls.PI ** (1/2))) * seq
+        return erf
+                                
     def __init__(self, data=None, mean=0., stddev=1.):
         """Initializes the data."""
         if data is None:
@@ -38,11 +47,9 @@ class Normal:
         """Calculates the value of the PDF."""
         return (2.7182818285**((-1/2) * (((
             x - self.mean) / self.stddev)**2))) * (
-            1 / (self.stddev * (2 * 3.1415926536)**(1/2)))
+            1 / (self.stddev * (2 * self.PI)**(1/2)))
 
     def cdf(self, x):
         """Calculates the value of the CDF."""
-        X = (x - self.mean) / (self.stddev * (2**(1/2)))
-        erf = (2 / (3.1415926536**(1/2))) * (
-            X - (X**3)/3 + (X**5)/10 - (X**7)/42 + (X**9)/216)
-        return (1 / 2) * (1 + erf)
+        expression = (x - self.mean)/(self.stddev * (2 ** (1/2)))
+        return (1/2) * (1 + self.get_erf(expression))
