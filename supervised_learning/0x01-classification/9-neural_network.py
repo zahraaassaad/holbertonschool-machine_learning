@@ -26,32 +26,32 @@ class NeuralNetwork:
         self.__b2 = 0
         self.__A2 = 0
 
-        @property
-        def W1(self):
-            """Getter for weights1."""
-            return self.__W1
+    @property
+    def W1(self):
+        """Getter for weights1."""
+        return self.__W1
 
-        @property
-        def b1(self):
-            """Getter for bias1."""
-            return self.__b1
+    @property
+    def b1(self):
+        """Getter for bias1."""
+        return self.__b1
 
-        @property
-        def A1(self):
-            """Getter for A1."""
-            return self.__A1
+    @property
+    def A1(self):
+        """Getter for A1."""
+        return self.__A1
 
-        @property
-        def W2(self):
-            """Getter for weights2."""
-            return self.__W2
+    @property
+    def W2(self):
+        """Getter for weights2."""
+        return self.__W2
 
-        @property
-        def b2(self):
-            """Getter for bias2."""
-            return self.__b2
+    @property
+    def b2(self):
+        """Getter for bias2."""
+        return self.__b2
 
-        @property
-        def A2(self):
-            """Getter for A2."""
-            return self.__A2
+    @property
+    def A2(self):
+        """Getter for A2."""
+        return self.__A2
