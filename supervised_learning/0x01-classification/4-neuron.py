@@ -42,12 +42,13 @@ class Neuron:
 
     def cost(self, Y, A):
         """Calculates the cost of the model."""
-        array = np.multiply(Y, np.log(A)) + np.multiply((1 - Y), np.log(1.0000001 - A))
-        cost = - np.sum(array) / len(A[0])
+        cost_array = np.multiply(np.log(A), Y) + np.multiply((
+            1 - Y), np.log(1.0000001 - A))
+        cost = -np.sum(cost_array) / len(A[0])
         return cost
 
     def evaluate(self, X, Y):
         """Evaluates the neurons predictions."""
         self.forward_prop(X)
-        cost = self.cost(Y, self._A)
-        return (np.where(self._A > 0.5, 1, 0), cost)
+        cost = self.cost(Y, self.__A)
+        return (np.where(self.__A > 0.5, 1, 0), cost)
