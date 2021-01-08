@@ -63,3 +63,29 @@ class NeuralNetwork:
         Z2 = np.matmul(self.__W2, self.__A1) + self.__b2
         self.__A2 = 1 / (1 + np.exp(-Z2))
         return (self.__A1, self.__A2)
+
+    def cost(self, Y, A):
+        """Calculates the cost of the model."""
+        cost_array = np.multiply(np.log(A), Y) + np.multiply((
+            1 - Y), np.log(1.0000001 - A))
+        cost = -np.sum(cost_array) / len(A[0])
+        return cost
+
+    def evaluate(self, X, Y):
+        """Evaluates the neurons predictions."""
+        self.forward_prop(X)
+        cost = self.cost(Y, self.__A2)
+        return (np.where(self.__A2 > 0.5, 1, 0), cost)
+
+    def gradient_descent(self, X, Y, A1, A2, alpha=0.05):
+        """Calculates one pass of gradient descent."""
+        dz2 = A2 - Y
+        dw2 = (1 / len(Y[0])) * np.matmul(dz2, A1.T)
+        db2 = (1 / len(Y[0])) * np.sum(dz2, axis=1, keepdims=True)
+        dz1 = np.matmul(self.__W2.T, dz2) * (A1 * (1 - A1))
+        dw1 = (1 / len(Y[0])) * np.matmul(dz1, X.T)
+        db1 = (1 / len(Y[0])) * np.sum(dz1, axis=1, keepdims=True)
+        self.__W1 = self.__W1 - alpha * dw1
+        self.__b1 = self.__b1 - alpha * db1
+        self.__W2 = self.__W2 - alpha * dw2
+        self.__b2 = self.__b2 - alpha * db2
