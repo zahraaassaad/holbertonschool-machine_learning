@@ -74,3 +74,33 @@ class DeepNeuralNetwork:
         A, _ = self.forward_prop(X)
         cost = self.cost(Y, A)
         return (np.where(A > 0.5, 1, 0), cost)
+
+    def gradient_descent(self, Y, cache, alpha=0.05):
+        """Calculates one pass of gradient descent."""
+        weights_copy = self.__weights.copy()
+        dz = cache["A" + str(self.__L)] - Y
+        for i in range(self.__L, 0, -1):
+            A = cache["A" + str(i - 1)]
+            dw = (1 / len(Y[0])) * np.matmul(dz, A.T)
+            db = (1 / len(Y[0])) * np.sum(dz, axis=1, keepdims=True)
+            w = "W" + str(i)
+            b = "b" + str(i)
+            self.__weights[w] = self.__weights[w] - alpha * dw
+            self.__weights[b] = self.__weights[b] - alpha * db
+            dz = np.matmul(weights_copy["W" + str(i)].T, dz) * (A * (1 - A))
+
+    def train(self, X, Y, iterations=5000, alpha=0.05):
+        """Trains the deep neural network."""
+        if type(iterations) != int:
+            raise TypeError("iterations must be an integer")
+        if iterations < 0:
+            raise ValueError("iterations must be a positive integer")
+        if type(alpha) != float:
+            raise TypeError("alpha must be a float")
+        if alpha < 0:
+            raise ValueError("alpha must be positive")
+        _, cache = self.forward_prop(X)
+        for i in range(iterations):
+            self.gradient_descent(Y, cache, alpha)
+            _, cache = self.forward_prop(X)
+        return self.evaluate(X, Y)
