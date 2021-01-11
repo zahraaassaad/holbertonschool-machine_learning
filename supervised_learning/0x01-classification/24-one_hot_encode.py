@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+"""encodes to one-hot matrix.
+"""
+
 import numpy as np
 
 
