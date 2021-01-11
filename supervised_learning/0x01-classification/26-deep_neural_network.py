@@ -137,7 +137,9 @@ class DeepNeuralNetwork:
 
     def load(filename):
         """Loads a pickled DeepNeuralNetwork object"""
-        with open(filename, 'rb') as file_object:
-            b = pickle.load(file_object)
-            return b
-        return None
+        try:
+            with open(filename, 'rb') as file_object:
+                b = pickle.load(file_object)
+                return b
+        except (OSError, IOError) as e:
+            return None
