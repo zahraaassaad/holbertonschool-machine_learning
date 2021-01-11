@@ -61,7 +61,11 @@ class DeepNeuralNetwork:
                           self.__cache[a]) + self.__weights[b]
             a_new = "A" + str(i)
             if i != self.__L:
-                self.__cache[a_new] = 1 / (1 + np.exp(-Z))
+                if self.__activation == "sig":
+                    self.__cache[a_new] = 1 / (1 + np.exp(-Z))
+                else:
+                    self.__cache[a_new] = (
+                        np.exp(Z) - np.exp(-Z)) / (np.exp(Z) + np.exp(-Z))
             else:
                 t = np.exp(Z)
                 a_new = "A" + str(i)
