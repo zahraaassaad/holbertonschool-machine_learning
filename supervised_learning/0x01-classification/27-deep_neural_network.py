@@ -84,7 +84,7 @@ class DeepNeuralNetwork:
         A, _ = self.forward_prop(X)
         cost = self.cost(Y, A)
         decode = np.amax(A, axis=0)
-        return (np.where(A > 0.5, 1, 0), cost)
+        return (np.where(A == decode, 1, 0), cost)
 
     def gradient_descent(self, Y, cache, alpha=0.05):
         """Calculates one pass of gradient descent."""
