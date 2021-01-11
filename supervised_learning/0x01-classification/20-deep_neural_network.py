@@ -47,3 +47,30 @@ class DeepNeuralNetwork:
     def weights(self):
         """Getter for weights."""
         return self.__weights
+
+    def forward_prop(self, X):
+        """Calculates the forward propagation."""
+        self.__cache["A0"] = X
+        for i in range(1, self.__L + 1):
+            w = "W" + str(i)
+            b = "b" + str(i)
+            a = "A" + str(i - 1)
+            Z = np.matmul(self.__weights[w],
+                          self.__cache[a]) + self.__weights[b]
+            a_new = "A" + str(i)
+            self.__cache[a_new] = 1 / (1 + np.exp(-Z))
+        Act = "A" + str(self.__L)
+        return (self.__cache[Act], self.__cache)
+
+    def cost(self, Y, A):
+        """Calculates the cost of the model."""
+        cost_array = np.multiply(np.log(A), Y) + np.multiply((
+            1 - Y), np.log(1.0000001 - A))
+        cost = -np.sum(cost_array) / len(A[0])
+        return cost
+
+    def evaluate(self, X, Y):
+        """Evaluates the neurons predictions."""
+        A, _ = self.forward_prop(X)
+        cost = self.cost(Y, A)
+        return (np.where(A > 0.5, 1, 0), cost)
