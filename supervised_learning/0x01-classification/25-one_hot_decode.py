@@ -5,6 +5,7 @@
 
 import numpy as np
 
+
 def one_hot_decode(one_hot):
     """convert to vector."""
     if type(one_hot) is not np.ndarray or len(one_hot) == 0:
