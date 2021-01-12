@@ -57,16 +57,16 @@ class DeepNeuralNetwork:
             w = "W" + str(i)
             b = "b" + str(i)
             a = "A" + str(i - 1)
-            Z = np.matmul(self.__weights[w],
+            z = np.matmul(self.__weights[w],
                           self.__cache[a]) + self.__weights[b]
             if i != self.__L:
                 A = 1 / (1 + np.exp((-1) * z))
             else:
-                t = np.exp(Z)
-                A = temp / np.sum(temp, axis=0, keepdims=True)
-            self.__cache["A" + str(x)] = A
+                t = np.exp(z)
+                A = t / np.sum(t, axis=0, keepdims=True)
+            self.__cache["A" + str(i)] = A
         return self.__cache["A" + str(self.__L)], self.__cache
-
+    
     def cost(self, Y, A):
         """Calculates the cost of the model."""
         m = Y.shape[1]
