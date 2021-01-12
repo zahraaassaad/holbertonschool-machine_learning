@@ -11,7 +11,7 @@ import pickle
 class DeepNeuralNetwork:
     """DeepNeuralNetwork class. Defines a deep neural network.
     """
-    def __init__(self, nx, layers):
+    def __init__(self, nx, layers, activation='sig'):
         """Initializes the data."""
         if type(nx) != int:
             raise TypeError("nx must be an integers")
@@ -19,6 +19,8 @@ class DeepNeuralNetwork:
             raise ValueError("nx must be a positive integers")
         if type(layers) != list or len(layers) == 0:
             raise TypeError("layers must be a list of positive integers")
+        if activation != "sig" and activation != "tanh":
+            raise ValueError("activation must be 'sig' or 'tanh'")
         self.__L = len(layers)
         self.__cache = {}
         self.__weights = {}
@@ -98,7 +100,12 @@ class DeepNeuralNetwork:
             b = "b" + str(i)
             self.__weights[w] = self.__weights[w] - alpha * dw
             self.__weights[b] = self.__weights[b] - alpha * db
-            dz = np.matmul(weights_copy["W" + str(i)].T, dz) * (A * (1 - A))
+            if self.__activation == "sig":
+                dz = np.matmul(weights_copy["W" + str(i)].T, dz) * (
+                    A * (1 - A))
+            else:
+                dz = np.matmul(weights_copy["W" + str(i)].T, dz) * (
+                    1 - A * A)
 
     def train(self, X, Y, iterations=5000,
               alpha=0.05, verbose=True, graph=True, step=100):
