@@ -14,25 +14,25 @@ class DeepNeuralNetwork:
     def __init__(self, nx, layers):
         """Initializes the data."""
         if type(nx) != int:
-            raise TypeError("nx must be an integers")
+            raise TypeError("nx must be an integer")
         if nx < 1:
-            raise ValueError("nx must be a positive integers")
+            raise ValueError("nx must be a positive integer")
         if type(layers) != list or len(layers) == 0:
             raise TypeError("layers must be a list of positive integers")
         self.__L = len(layers)
         self.__cache = {}
         self.__weights = {}
-        layer = 1
+        num_layer = 1
         layer_size = nx
         for i in layers:
-            if type(i) != int or i <= 0:
+            if type(i) != int or i < 0:
                 raise TypeError("layers must be a list of positive integers")
-            w = "W" + str(layer)
-            b = "b" + str(layer)
+            w = "W" + str(num_layer)
+            b = "b" + str(num_layer)
             self.__weights[w] = np.random.randn(
                 i, layer_size) * np.sqrt(2/layer_size)
             self.__weights[b] = np.zeros((i, 1))
-            layer += 1
+            num_layer += 1
             layer_size = i
 
     @property
@@ -57,29 +57,30 @@ class DeepNeuralNetwork:
             w = "W" + str(i)
             b = "b" + str(i)
             a = "A" + str(i - 1)
-            z = np.matmul(self.__weights[w],
+            Z = np.matmul(self.__weights[w],
                           self.__cache[a]) + self.__weights[b]
+            a_new = "A" + str(i)
             if i != self.__L:
-                A = 1 / (1 + np.exp((-1) * z))
+                self.__cache[a_new] = 1 / (1 + np.exp(-Z))
             else:
-                t = np.exp(z)
-                A = t / np.sum(t, axis=0, keepdims=True)
-            self.__cache["A" + str(i)] = A
-        return self.__cache["A" + str(self.__L)], self.__cache
+                t = np.exp(Z)
+                a_new = "A" + str(i)
+                self.__cache[a_new] = t / t.sum(axis=0, keepdims=True)
+        Act = "A" + str(self.__L)
+        return (self.__cache[Act], self.__cache)
 
     def cost(self, Y, A):
         """Calculates the cost of the model."""
-        m = Y.shape[1]
-        L = Y * np.log(A)
-        return (-1/m) * np.sum(L)
+        cost_array = np.log(A) * Y
+        cost = -np.sum(cost_array)/len(A[0])
+        return cost
 
     def evaluate(self, X, Y):
         """Evaluates the neurons predictions."""
-        self.forward_prop(X)
-        A = self.cache["A" + str(self.L)]
-        R = np.eye(A.shape[0])[np.argmax(A, axis=0)].T
-        cost = self.cost(Y, A)
-        return R, cost
+        A, _ = self.forward_prop(X)
+        cost_r = self.cost(Y, A)
+        decode = np.amax(A, axis=0)
+        return (np.where(A == decode, 1, 0), cost_r)
 
     def gradient_descent(self, Y, cache, alpha=0.05):
         """Calculates one pass of gradient descent."""
@@ -109,12 +110,12 @@ class DeepNeuralNetwork:
         if verbose is True or graph is True:
             if type(step) != int:
                 raise TypeError("step must be an integer")
-            if step <= 0 or step > iterations:
+            if step < 0 or step > iterations:
                 raise ValueError("step must be positive and <= iterations")
         _, cache = self.forward_prop(X)
         cost_list = []
         iter_x = []
-        for i in range(iterations):
+        for i in range(iterations + 1):
             A, cost = self.evaluate(X, Y)
             if verbose is True and (
                     i % step == 0 or i == 0 or i == iterations):
@@ -124,6 +125,7 @@ class DeepNeuralNetwork:
             if i != iterations:
                 self.gradient_descent(Y, cache, alpha)
                 _, cache = self.forward_prop(X)
+
         if graph is True:
             plt.plot(iter_x, cost_list)
             plt.title("Training Cost")
