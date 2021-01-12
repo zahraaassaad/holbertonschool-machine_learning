@@ -59,28 +59,27 @@ class DeepNeuralNetwork:
             a = "A" + str(i - 1)
             Z = np.matmul(self.__weights[w],
                           self.__cache[a]) + self.__weights[b]
-            a_new = "A" + str(i)
             if i != self.__L:
-                self.__cache[a_new] = 1 / (1 + np.exp(-Z))
+                A = 1 / (1 + np.exp((-1) * z))
             else:
                 t = np.exp(Z)
-                a_new = "A" + str(i)
-                self.__cache[a_new] = t / t.sum(axis=0, keepdims=True)
-        Act = "A" + str(self.__L)
-        return (self.__cache[Act], self.__cache)
+                A = temp / np.sum(temp, axis=0, keepdims=True)
+            self.__cache["A" + str(x)] = A
+        return self.__cache["A" + str(self.__L)], self.__cache
 
     def cost(self, Y, A):
         """Calculates the cost of the model."""
-        cost_array = np.log(A) * Y
-        cost = -np.sum(cost_array) / len(A[0])
-        return cost
+        m = Y.shape[1]
+        L = Y * np.log(A)
+        return (-1/m) * np.sum(L)
 
     def evaluate(self, X, Y):
         """Evaluates the neurons predictions."""
-        A, _ = self.forward_prop(X)
+        self.forward_prop(X)
+        A = self.cache["A" + str(self.L)]
+        R = np.eye(A.shape[0])[np.argmax(A, axis=0)].T
         cost = self.cost(Y, A)
-        decode = np.amax(A, axis=0)
-        return (np.where(A == decode, 1, 0), cost)
+        return R, cost
 
     def gradient_descent(self, Y, cache, alpha=0.05):
         """Calculates one pass of gradient descent."""
