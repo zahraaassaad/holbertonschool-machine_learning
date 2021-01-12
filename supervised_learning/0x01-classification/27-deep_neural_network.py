@@ -66,7 +66,7 @@ class DeepNeuralNetwork:
                 A = t / np.sum(t, axis=0, keepdims=True)
             self.__cache["A" + str(i)] = A
         return self.__cache["A" + str(self.__L)], self.__cache
-    
+
     def cost(self, Y, A):
         """Calculates the cost of the model."""
         m = Y.shape[1]
