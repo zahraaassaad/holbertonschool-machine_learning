@@ -14,9 +14,9 @@ class DeepNeuralNetwork:
     def __init__(self, nx, layers, activation='sig'):
         """Initializes the data."""
         if type(nx) != int:
-            raise TypeError("nx must be an integers")
+            raise TypeError("nx must be an integer")
         if nx < 1:
-            raise ValueError("nx must be a positive integers")
+            raise ValueError("nx must be a positive integer")
         if type(layers) != list or len(layers) == 0:
             raise TypeError("layers must be a list of positive integers")
         if activation != "sig" and activation != "tanh":
@@ -24,17 +24,18 @@ class DeepNeuralNetwork:
         self.__L = len(layers)
         self.__cache = {}
         self.__weights = {}
-        layer = 1
+        self.__activation = activation
+        num_layer = 1
         layer_size = nx
         for i in layers:
-            if type(i) != int or i <= 0:
+            if type(i) != int or i < 0:
                 raise TypeError("layers must be a list of positive integers")
-            w = "W" + str(layer)
-            b = "b" + str(layer)
+            w = "W" + str(num_layer)
+            b = "b" + str(num_layer)
             self.__weights[w] = np.random.randn(
                 i, layer_size) * np.sqrt(2/layer_size)
             self.__weights[b] = np.zeros((i, 1))
-            layer += 1
+            num_layer += 1
             layer_size = i
 
     @property
@@ -78,15 +79,15 @@ class DeepNeuralNetwork:
     def cost(self, Y, A):
         """Calculates the cost of the model."""
         cost_array = np.log(A) * Y
-        cost = -np.sum(cost_array) / len(A[0])
+        cost = -np.sum(cost_array)/len(A[0])
         return cost
 
     def evaluate(self, X, Y):
         """Evaluates the neurons predictions."""
         A, _ = self.forward_prop(X)
-        cost = self.cost(Y, A)
+        cost_r = self.cost(Y, A)
         decode = np.amax(A, axis=0)
-        return (np.where(A == decode, 1, 0), cost)
+        return (np.where(A == decode, 1, 0), cost_r)
 
     def gradient_descent(self, Y, cache, alpha=0.05):
         """Calculates one pass of gradient descent."""
@@ -104,8 +105,7 @@ class DeepNeuralNetwork:
                 dz = np.matmul(weights_copy["W" + str(i)].T, dz) * (
                     A * (1 - A))
             else:
-                dz = np.matmul(weights_copy["W" + str(i)].T, dz) * (
-                    1 - A * A)
+                dz = np.matmul(weights_copy["W" + str(i)].T, dz) * (1 - A * A)
 
     def train(self, X, Y, iterations=5000,
               alpha=0.05, verbose=True, graph=True, step=100):
@@ -121,12 +121,12 @@ class DeepNeuralNetwork:
         if verbose is True or graph is True:
             if type(step) != int:
                 raise TypeError("step must be an integer")
-            if step <= 0 or step > iterations:
+            if step < 0 or step > iterations:
                 raise ValueError("step must be positive and <= iterations")
         _, cache = self.forward_prop(X)
         cost_list = []
         iter_x = []
-        for i in range(iterations):
+        for i in range(iterations + 1):
             A, cost = self.evaluate(X, Y)
             if verbose is True and (
                     i % step == 0 or i == 0 or i == iterations):
@@ -136,6 +136,7 @@ class DeepNeuralNetwork:
             if i != iterations:
                 self.gradient_descent(Y, cache, alpha)
                 _, cache = self.forward_prop(X)
+
         if graph is True:
             plt.plot(iter_x, cost_list)
             plt.title("Training Cost")
