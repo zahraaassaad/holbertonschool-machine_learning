@@ -29,10 +29,10 @@ def train(X_train, Y_train, X_valid,
     with tf.Session() as sess:
         sess.run(tf.initialize_all_variables())
         for i in range(iterations + 1):
-            loss_train, accuracy_train =
-            sess.run([loss, accuracy], {x: X_train, y: Y_train})
-            loss_valid, accuracy_valid =
-            sess.run([loss, accuracy], {x: X_valid, y: Y_valid})
+            loss_train, accuracy_train = sess.run(
+               [loss, accuracy], {x: X_train, y: Y_train})
+            loss_valid, accuracy_valid = sess.run(
+               [loss, accuracy], {x: X_valid, y: Y_valid})
             if i % 100 == 0 or i == 0 or i == iterations:
                 print("After {} iterations:".format(i))
                 print("\tTraining Cost: {}".format(loss_train))
