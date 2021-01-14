@@ -14,9 +14,9 @@ def train_mini_batch(X_train, Y_train,
                      load_path="/tmp/model.ckpt", save_path="/tmp/model.ckpt"):
     """Returns: the path where the model was saved."""
     with tf.Session() as sess:
-        new_path = save_path + ".meta"
+        new_path = load_path + ".meta"
         saver = tf.train.import_meta_graph(new_path)
-        saver.restore(sess, save_path)
+        saver.restore(sess, load_path)
         x = tf.get_collection("x")[0]
         y = tf.get_collection("y")[0]
         accuracy = tf.get_collection("accuracy")[0]
