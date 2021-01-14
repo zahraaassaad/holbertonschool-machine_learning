@@ -26,8 +26,10 @@ def train_mini_batch(X_train, Y_train,
             iterations += 1
             over_size = True
         for epoch in range(epochs + 1):
-            l_train, a_train = sess.run([loss, accuracy],{x: X_train, y: Y_train})
-            l_valid, a_valid = sess.run([loss, accuracy],{x: X_valid, y: Y_valid})
+            l_train, a_train = sess.run([loss, accuracy], {
+                x: X_train, y: Y_train})
+            l_valid, a_valid = sess.run([loss, accuracy], {
+                x: X_valid, y: Y_valid})
             print("After {} epochs:".format(epoch))
             print("\tTraining Cost: {}".format(l_train))
             print("\tTraining Accuracy: {}".format(a_train))
