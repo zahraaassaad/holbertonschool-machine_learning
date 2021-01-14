@@ -19,9 +19,9 @@ def train_mini_batch(X_train, Y_train,
         saver.restore(sess, save_path)
         x = tf.get_collection("x")[0]
         y = tf.get_collection("y")[0]
-        accuracy = tf.get_collection("accuracy")
-        loss = tf.get_collection("loss")
-        train_op = tf.get_collection("train_op")
+        accuracy = tf.get_collection("accuracy")[0]
+        loss = tf.get_collection("loss")[0]
+        train_op = tf.get_collection("train_op")[0]
         iterations = X_train.shape[0] // batch_size
         over_size = False
         if iterations % batch_size != 0:
