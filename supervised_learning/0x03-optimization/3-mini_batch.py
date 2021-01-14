@@ -15,7 +15,7 @@ def train_mini_batch(X_train, Y_train,
     """Returns: the path where the model was saved."""
     with tf.Session() as sess:
         new_path = save_path + ".meta"
-        saver = tf.train.import_meta_graph(load_path)
+        saver = tf.train.import_meta_graph(new_path)
         saver.restore(sess, save_path)
         x = tf.get_collection("x")[0]
         y = tf.get_collection("y")[0]
