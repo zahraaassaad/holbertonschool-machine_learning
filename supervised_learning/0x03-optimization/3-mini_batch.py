@@ -14,8 +14,7 @@ def train_mini_batch(X_train, Y_train,
                      load_path="/tmp/model.ckpt", save_path="/tmp/model.ckpt"):
     """Returns: the path where the model was saved."""
     with tf.Session() as sess:
-        new_path = load_path + ".meta"
-        saver = tf.train.import_meta_graph(new_path)
+        saver = tf.train.import_meta_graph(load_path + '.meta')
         saver.restore(sess, load_path)
         x = tf.get_collection("x")[0]
         y = tf.get_collection("y")[0]
@@ -28,9 +27,9 @@ def train_mini_batch(X_train, Y_train,
             iterations += 1
             over_size = True
         for epoch in range(epochs + 1):
-            a_train, l_train = sess.run([accuracy, loss],
+            l_train, a_train = sess.run([loss, accuracy],
                                         {x: X_train, y: Y_train})
-            a_valid, l_valid = sess.run([accuracy, loss],
+            l_valid, a_valid = sess.run([loss, accuracy],
                                         {x: X_valid, y: Y_valid})
             print("After {} epochs:".format(epoch))
             print("\tTraining Cost: {}".format(l_train))
