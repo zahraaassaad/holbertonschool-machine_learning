@@ -7,7 +7,7 @@ import tensorflow as tf
 
 
 def l2_reg_create_layer(prev, n, activation, lambtha):
-    """Returns: the output of the new layer"""
+    """Returns the output of the new layer"""
     w = tf.contrib.layers.variance_scaling_initializer(mode="FAN_AVG")
     l2_regu = tf.contrib.layers.l2_regularizer(lambtha)
     layer = tf.layers.Dense(units=n, activation=activation,
