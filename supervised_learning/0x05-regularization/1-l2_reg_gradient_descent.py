@@ -8,7 +8,7 @@ import numpy as np
 def l2_reg_gradient_descent(Y, weights, cache, alpha, lambtha, L):
     """gradient descent with L2 regularization"""
     weights_copy = weights.copy()
-    m = Y.shape[1]
+    m = len(Y[0])
     A = cache["A" + str(L)]
     dz = cache["A" + str(L)] - Y
     for i in range(L, 0, -1):
