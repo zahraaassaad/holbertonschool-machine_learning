@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
+
 """based on 4-train to also analyze validation data"""
+
 import tensorflow.keras as K
 
 
