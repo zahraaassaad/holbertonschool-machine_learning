@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-sets up Adam optimization for a keras model 
+sets up Adam optimization for a keras model
 """
 
 import tensorflow.keras as K
