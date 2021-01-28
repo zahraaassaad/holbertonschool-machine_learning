@@ -7,7 +7,7 @@ performs a valid convolution on grayscale images
 import numpy as np
 
 
-def convolve_grayscale_valid(images, kernel):
+def convolve_grayscale_same(images, kernel):
     """
     Returns: a numpy.ndarray containing the convolved images
     """
