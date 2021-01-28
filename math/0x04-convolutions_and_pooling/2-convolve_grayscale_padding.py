@@ -11,13 +11,13 @@ def convolve_grayscale_padding(images, kernel, padding):
     """
     Returns: a numpy.ndarray containing the convolved images
     """
-    m, h, w = images.shape
     kh, kw = kernel.shape
     (ph, pw) = padding
     padded_images = np.pad(
         images,
         [(0, 0), (ph, ph), (pw, pw)]
     )
+    m, h, w = padded_images.shape
     conv_shape = (m, h - kh + 1, w - kw + 1)
     conv = np.zeros(conv_shape)
     for row in range(conv_shape[1]):
