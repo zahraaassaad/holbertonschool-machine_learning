@@ -1,39 +1,44 @@
 #!/usr/bin/env python3
-""" Module to compute back propagation in a convolutional layer with padding"""
+"""performs back propagation over a convolutional
+   layer of a neural network"""
 import numpy as np
 
 
 def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
-    """ Back prop for NN layer"""
-    m, h_prev, w_prev, _ = A_prev.shape
-    _, h_new, w_new, _ = dZ.shape
-    kh, kw, c_prev, c_new = W.shape
-    sh, sw = stride
-
-    if padding == "same":
-        ph = ((sh * h_prev) - sh + kh - h_prev) // 2
-        pw = ((sw * w_prev) - sw + kw - w_prev) // 2
+    """partial derivatives with respect to the
+       previous layer (dA_prev),
+       the kernels (dW), and the biases (db)"""
+    hk = W.shape[0]
+    wk = W.shape[1]
+    nc = W.shape[3]
+    m = A_prev.shape[0]
+    hm = A_prev.shape[1]
+    wm = A_prev.shape[2]
+    st1 = stride[1]
+    st0 = stride[0]
+    if padding == "valid":
+        pad0 = 0
+        pad1 = 0
     else:
-        ph, pw = 0, 0
-
-    pad_img = np.pad(A_prev, ((0, 0), (ph, ph), (pw, pw), (0, 0)),
-                     mode='constant', constant_values=0)
-    db = np.sum(dZ, axis=(0, 1, 2), keepdims=True)
-    dA = np.zeros(pad_img.shape)
+        pad0 = int(((hm - 1) * st0 + hk - hm) / 2) + 1
+        pad1 = int(((wm - 1) * st1 + wk - wm) / 2) + 1
+    out_h = int((hm + 2 * pad0 - hk) / st0) + 1
+    out_w = int((wm + 2 * pad1 - wk) / st1) + 1
+    x_pad = np.pad(A_prev, ((0, 0), (pad0, pad0), (
+                           pad1, pad1), (0, 0)), 'constant')
+    dX = np.zeros(x_pad.shape)
     dW = np.zeros(W.shape)
-
-    for img in range(m):
-        for row in range(h_new):
-            for col in range(w_new):
-                for ch in range(c_new):
-                    a = row * sh
-                    b = a + kh
-                    c = col * sw
-                    d = c + kw
-                    dA[img, a:b, c:d, :] += dZ[img, row, col, ch]\
-                        * W[:, :, :, ch]
-                    dW[:, :, :, ch] += pad_img[img, a:b, c:d, :]\
-                        * dZ[img, row, col, ch]
-    if padding == 'same':
-        dA = dA[:, ph:-ph, pw:-pw, :]
-    return dA, dW, db
+    db = np.sum(dZ, axis=(0, 1, 2), keepdims=True)
+    for i in range(m):
+        for h in range(out_h):
+            for w in range(out_w):
+                for c in range(nc):
+                    dX[i, h * st0: h * st0 + hk,
+                       w * st1: w * st1 + wk, :] += dZ[
+                       i, h, w, c] * W[:, :, :, c]
+                    dW[:, :, :, c] += x_pad[i, h * st0: h * st0 + hk,
+                                            w * st1: w * st1 + wk,
+                                            :] * dZ[i, h, w, c]
+    if padding == "same":
+        dX = dX[:, pad0:-pad0, pad1:-pad1, :]
+    return(dX, dW, db)
