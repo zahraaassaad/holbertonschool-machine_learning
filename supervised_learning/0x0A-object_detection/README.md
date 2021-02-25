@@ -1,22 +1,30 @@
-0x0A. Object Detection
-Concepts
-What is OpenCV and how do you use it?
-What is object detection?
-What is the Sliding Windows algorithm?
-What is a single-shot detector?
-What is the YOLO algorithm?
-What is IOU and how do you calculate it?
-What is non-max suppression?
-What are anchor boxes?
-What is mAP and how do you calculate it?
-Installation
-Files were interpreted/compiled on Ubuntu 16.04 LTS using python3 (version 3.5) Files were executed with numpy (version 1.15) and matplotlib (version 3.0) Your files will be executed with numpy (version 1.15) and tensorflow (version 1.12)
+# 0x0A. Object Detection
 
-Usage
+## Concepts
+
+- What is OpenCV and how do you use it?
+- What is object detection?
+- What is the Sliding Windows algorithm?
+- What is a single-shot detector?
+- What is the YOLO algorithm?
+- What is IOU and how do you calculate it?
+- What is non-max suppression?
+- What are anchor boxes?
+- What is mAP and how do you calculate it?
+
+# Installation
+Files were interpreted/compiled on Ubuntu 16.04 LTS using python3 (version 3.5)
+Files were executed with numpy (version 1.15) and matplotlib (version 3.0)
+Your files will be executed with numpy (version 1.15) and tensorflow (version 1.12)
+
+## Usage
+
 Educational purposes
 
-Tasks
-Initialize Yolo: 0-yolo.py
+## Tasks
+
+0. Initialize Yolo: 0-yolo.py
+```
 Write a class Yolo that uses the Yolo v3 algorithm to perform object detection:
 
 class constructor: def __init__(self, model_path, classes_path, class_t, nms_t, anchors):
@@ -34,7 +42,10 @@ class_names: a list of the class names for the model
 class_t: the box score threshold for the initial filtering step
 nms_t: the IOU threshold for non-max suppression
 anchors: the anchor boxes
-Process Outputs: 1-yolo.py
+```
+
+1. Process Outputs: 1-yolo.py
+```
 Write a class Yolo (Based on 0-yolo.py):
 
 Add the public method def process_outputs(self, outputs, image_size):
@@ -52,7 +63,9 @@ boxes: a list of numpy.ndarrays of shape (grid_height, grid_width, anchor_boxes,
 (x1, y1, x2, y2) should represent the boundary box relative to original image
 box_confidences: a list of numpy.ndarrays of shape (grid_height, grid_width, anchor_boxes, 1) containing the box confidences for each output, respectively
 box_class_probs: a list of numpy.ndarrays of shape (grid_height, grid_width, anchor_boxes, classes) containing the box’s class probabilities for each output, respectively
-Filter Boxes: 2-yolo.py
+```
+2. Filter Boxes: 2-yolo.py
+```
 Write a class Yolo (Based on 1-yolo.py):
 
 Add the public method def filter_boxes(self, boxes, box_confidences, box_class_probs):
@@ -63,7 +76,9 @@ Returns a tuple of (filtered_boxes, box_classes, box_scores):
 filtered_boxes: a numpy.ndarray of shape (?, 4) containing all of the filtered bounding boxes:
 box_classes: a numpy.ndarray of shape (?,) containing the class number that each box in filtered_boxes predicts, respectively
 box_scores: a numpy.ndarray of shape (?) containing the box scores for each box in filtered_boxes, respectively
-Non-max Suppression: 3-yolo.py
+```
+3. Non-max Suppression: 3-yolo.py
+```
 Write a class Yolo (Based on 2-yolo.py):
 
 Add the public method def non_max_suppression(self, filtered_boxes, box_classes, box_scores):
@@ -74,7 +89,10 @@ Returns a tuple of (box_predictions, predicted_box_classes, predicted_box_scores
 box_predictions: a numpy.ndarray of shape (?, 4) containing all of the predicted bounding boxes ordered by class and box score
 predicted_box_classes: a numpy.ndarray of shape (?,) containing the class number for box_predictions ordered by class and box score, respectively
 predicted_box_scores: a numpy.ndarray of shape (?) containing the box scores for box_predictions ordered by class and box score, respectively
-Load images: 4-yolo.py
+```
+
+4. Load images: 4-yolo.py
+```
 Write a class Yolo (Based on 3-yolo.py):
 
 Add the static method def load_images(folder_path):
@@ -82,7 +100,10 @@ folder_path: a string representing the path to the folder holding all the images
 Returns a tuple of (images, image_paths):
 images: a list of images as numpy.ndarrays
 image_paths: a list of paths to the individual images in images
-Preprocess images: 5-yolo.py
+```
+
+5. Preprocess images: 5-yolo.py
+```
 Write a class Yolo (Based on 4-yolo.py):
 
 Add the public method def preprocess_images(self, images):
@@ -97,7 +118,9 @@ input_w: the input width for the Darknet model Note: this can vary by model
 3: number of color channels
 image_shapes: a numpy.ndarray of shape (ni, 2) containing the original height and width of the images
 2 => (image_height, image_width)
-Show boxes: 6-yolo.py
+```
+6. Show boxes: 6-yolo.py
+```
 Write a class Yolo (Based on 5-yolo.py):
 
 Add the public method def show_boxes(self, image, boxes, box_classes, box_scores, file_name):
@@ -122,7 +145,9 @@ If detections does not exist, create it
 The saved image should have the file name file_name
 The image window should be closed
 If any key besides s is pressed, the image window should be closed without saving
-Predict: 7-yolo.py
+```
+7. Predict: 7-yolo.py
+```
 Write a class Yolo (Based on 6-yolo.py):
 
 Add the public method def predict(self, folder_path):
@@ -132,3 +157,4 @@ Displays all images using the show_boxes method
 Returns: a tuple of (predictions, image_paths):
 predictions: a list of tuples for each image of (boxes, box_classes, box_scores)
 image_paths: a list of image paths corresponding to each prediction in predictions
+```
