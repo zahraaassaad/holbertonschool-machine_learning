@@ -14,7 +14,7 @@ def determinant(matrix):
     """
     if matrix == [[]]:
         return 1
-    if matrix == [] or type(matrix) != list or type(matrix[0]) != list:
+    if len(matrix) == 0 or type(matrix) != list or type(matrix[0]) != list:
         raise TypeError("matrix must be a list of lists")
     if len(matrix[0]) != len(matrix):
         raise ValueError("matrix must be a square matrix")
