@@ -5,6 +5,7 @@
 calculates the minor matrix of a matrix
 """
 
+
 def minor(matrix):
     """
     matrix is a list of lists whose determinant should be calculated
