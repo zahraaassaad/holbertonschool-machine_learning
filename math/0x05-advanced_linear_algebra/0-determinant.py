@@ -5,8 +5,6 @@
 calculates the determinant of a matrix
 """
 
-from numpy import linalg as LA
-
 
 def determinant(matrix):
     """
