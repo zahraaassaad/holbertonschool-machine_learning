@@ -17,4 +17,4 @@ def mean_cov(X):
     a = X - mean
     c = np.matmul(a.T, a)
     cov = c/(rows - 1)
-    return mean.reshape((1, d)), cov
+    return mean.reshape((1, cols)), cov
