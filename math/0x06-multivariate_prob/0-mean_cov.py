@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
-import numpy
-
 """
 0-mean_cov.py
 calculates the mean and covariance of a data set
 """
+import numpy
 
 
 def mean_cov(X):
