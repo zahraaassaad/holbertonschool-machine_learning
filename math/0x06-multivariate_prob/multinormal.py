@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""MultiNormal class MultiNormal that represents a Multivariate Normal distribution """
+"""MultiNormal class"""
 import numpy as np
 
 
@@ -13,9 +13,9 @@ class MultiNormal:
         n is the number of data points
         d is the number of dimensions in each data point
         If data is not a 2D numpy.ndarray:
-          raise a TypeError with the message data must be a 2D numpy.ndarray
+          raise a TypeError: data must be a 2D numpy.ndarray
         If n is less than 2:
-          raise a ValueError with the message data must contain multiple data points
+          raise a ValueError: data must contain multiple data points
         """
         if not isinstance(data, np.ndarray):
             raise TypeError("data must be a 2D numpy.ndarray")
