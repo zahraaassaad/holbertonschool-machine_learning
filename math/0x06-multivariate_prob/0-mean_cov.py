@@ -13,7 +13,7 @@ def mean_cov(X):
         raise TypeError("X must be a 2D numpy.ndarray")
     if len(X) < 2:
         raise ValueError("X must contain multiple data points")
-    mean = sum(X)/len(X)
+    mean = np.array([sum(X)/len(X)])
     rows, cols = X.shape
     cov_mat = np.zeros((cols, cols))
     for i in range(cols):
