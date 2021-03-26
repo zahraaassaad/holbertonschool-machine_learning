@@ -25,7 +25,7 @@ def P_init(X, perplexity):
     """
     n = X.shape[0]
     X_sum = np.sum(np.square(X), 1)
-    D = np.add(np.add(-2 * np.dot(X, X.T), sumX).T, sumX)
+    D = np.add(np.add(-2 * np.dot(X, X.T), X_sum).T, X_sum)
     np.fill_diagonal(D, 0.)
     betas = np.ones((n, 1))
     P = np.zeros((n, n))
