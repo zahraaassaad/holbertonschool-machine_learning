@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-""" calculates the mean and covariance of a data set """
+"""performs PCA on a dataset"""
 import numpy as np
 
 
-def mean_cov(X):
+def pca(X, var=0.95):
     """
   X is a numpy.ndarray of shape (n, d) where:
   n is the number of data points
