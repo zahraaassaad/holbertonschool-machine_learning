@@ -24,7 +24,9 @@ def initialize(X, k):
         return None
     if len(X.shape) != 2 or k < 0:
         return None
-    min_x = np.amin(X, axis=0)
-    max_x = np.amax(X, axis=0)
-    d = X.shape[1]
-    return np.random.uniform(min_x, max_x, (k, d))
+    n, d = X.shape
+    if k == 0:
+        return None
+    low = np.amin(X, axis=0)
+    high = np.amax(X, axis=0)
+    return np.random.uniform(low, high, size=(k, d))
