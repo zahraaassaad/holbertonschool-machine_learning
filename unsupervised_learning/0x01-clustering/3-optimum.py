@@ -24,32 +24,27 @@ def optimum_k(X, kmin=1, kmax=None, iterations=1000):
         of K-means for each cluster size
         d_vars is a list containing the difference in variance
         from the smallest cluster size for each cluster size"""
-    if type(X) is not np.ndarray:
-        return (None, None)
-    if type(kmin) is not int:
-        return (None, None)
-    if kmax is not None and type(kmax) is not int:
-        return (None, None)
-    if kmax is None:
-        kmax = X.shape[0]
-    if len(X.shape) != 2 or kmin < 1:
-        return (None, None)
-    if kmax is not None and kmax <= kmin:
-        return (None, None)
-    if type(iterations) is not int:
-        return (None, None)
-    if iterations <= 0:
-        return (None, None)
+    if not isinstance(X, np.ndarray) or len(X.shape) != 2:
+        return None, None
+    if not isinstance(iterations, int) or iterations <= 0:
+        return None, None
+    if not isinstance(kmin, int) or kmin < 1:
+        return None, None
+    if kmax and not isinstance(kmax, int) or kmax < 1:
+        return None, None
+    if kmax and kmin >= kmax:
+        return None, None
+
+    n, d = X.shape
+    kmax = n if not kmax else kmax
     results = []
-    variances = []
-    k = kmin
-    for k in range(kmin, kmax + 1):
-        C, clss = kmeans(X, k)
-        var = variance(X, C)
-        results.append((C, clss))
-        variances.append(var)
-    first = variances[0]
     d_vars = []
-    for i in range(len(variances)):
-        d_vars.append(first - variances[i])
-    return (results, d_vars)
+    for clusters in range(kmin, kmax + 1):
+        centroids, clss = kmeans(X, clusters, iterations=1000)
+        results.append((centroids, clss))
+        if clusters == kmin:
+            comp_var = variance(X, centroids)
+        var = variance(X, centroids)
+        d_vars.append(comp_var - var)
+
+    return results, d_vars
