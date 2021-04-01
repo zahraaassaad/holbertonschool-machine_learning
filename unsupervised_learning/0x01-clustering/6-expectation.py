@@ -6,16 +6,18 @@ pdf = __import__('5-pdf').pdf
 
 def expectation(X, pi, m, S):
     """
-    X is a numpy.ndarray of shape (n, d) containing the data set
-    pi is a numpy.ndarray of shape (k,) containing the priors for each cluster
-    m is a numpy.ndarray of shape (k, d) containing the centroid means for
-        each cluster
-    S is a numpy.ndarray of shape (k, d, d) containing the covariance matrices
-        for each cluster
+    Function that calculates the expectation step in the EM algorithm for a GMM
+    Args:
+        X: numpy.ndarray of shape (n, d) containing the data set
+        pi: numpy.ndarray of shape (k,) containing the priors for each cluster
+        m: numpy.ndarray of shape (k, d) containing the centroid means for each
+           cluster
+        S: numpy.ndarray of shape (k, d, d) containing the covariance matrices
+           for each cluster
     Returns: g, l, or None, None on failure
-        g is a numpy.ndarray of shape (k, n) containing the posterior
-            probabilities for each data point in each cluster
-        l is the total log likelihood
+             g: numpy.ndarray of shape (k, n) containing the posterior
+                probabilities for each data point in each cluster
+             l: is the total log likelihood
     """
     if not isinstance(X, np.ndarray) or len(X.shape) != 2:
         return None, None
@@ -25,14 +27,26 @@ def expectation(X, pi, m, S):
         return None, None
     if not isinstance(S, np.ndarray) or len(S.shape) != 3:
         return None, None
+    if not np.isclose([np.sum(pi)], [1])[0]:
+        return None, None
+
     n, d = X.shape
     k = pi.shape[0]
-    g = np.zeros((k, n))
+    if d != m.shape[1] or d != S.shape[1] or d != S.shape[2]:
+        return None, None
+    if k != m.shape[0] or k != S.shape[0]:
+        return None, None
+
+    centroids_mean = m
+    covariance_mat = S
+    gauss_components = np.zeros((k, n))
+
     for i in range(k):
-        P = pdf(X, m[i], S[i])
-        num = P * pi[i]
-        g[i] = num
-    density = np.sum(g, axis=0)
-    g = g / density
-    lg = np.sum(np.log(density))
-    return g, lg
+        likelihood = pdf(X, centroids_mean[i], covariance_mat[i])
+        prior = pi[i]
+        gauss_components[i] = likelihood * prior
+    g = gauss_components / np.sum(gauss_components, axis=0)
+
+    log_likelihood = np.sum(np.log(np.sum(gauss_components, axis=0)))
+
+    return g, log_likelihood
