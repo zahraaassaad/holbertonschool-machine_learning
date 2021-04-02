@@ -6,9 +6,14 @@ import numpy as np
 
 def initialize(X, k):
     """
-    Returns: a numpy.ndarray of shape (k, d)
-        containing the initialized centroids for each cluster,
-        or None on failure
+    Initializes cluster centroids for K-means
+    Args:
+        X: numpy.ndarray of shape (n, d) containing the dataset
+           n: the number of data points
+           d: the number of dimensions for each data point
+        k: positive integer containing the number of clusters
+    Returns: numpy.ndarray of shape (k, d) containing the initialized
+             centroids for each cluster, or None on failure
     """
     if type(X) != np.ndarray or len(X.shape) != 2:
         return None
