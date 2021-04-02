@@ -15,16 +15,16 @@ def initialize(X, k):
     Returns: numpy.ndarray of shape (k, d) containing the initialized
              centroids for each cluster, or None on failure
     """
-    # failure
-    if type(X) != np.ndarray or len(X.shape) != 2:
+    # cases
+    if not isinstance(X, np.ndarray) or len(X.shape) != 2:
         return None
-    if type(k) != int or k <= 0:
+    if not isinstance(k, int) or k <= 0:
         return None
 
-    #finding dimentions for centroid
-    n, d = np.shape(X)
+    # Setting min and max values per col
+    n, d = X.shape
     X_min = X.min(axis=0)
     X_max = X.max(axis=0)
 
-    #return centroids
+    # return multivariate uniform distribution
     return np.random.uniform(X_min, X_max, size=(k, d))
