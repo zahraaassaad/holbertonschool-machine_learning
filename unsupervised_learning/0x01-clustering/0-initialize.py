@@ -19,7 +19,7 @@ def initialize(X, k):
     if type(k) != int or k <= 0:
         return None
     n, d = np.shape(X)
-    l = np.min(X, axis=0)
-    h = np.max(X, axis=0)
+    l = X.min(axis=0)
+    h = X.max(axis=0)
     centroids = np.random.uniform(l, h, size=(k, d))
     return centroids
