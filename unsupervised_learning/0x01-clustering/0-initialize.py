@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
-
-"""
-initializes cluster centroids for K-means
-"""
-
+"""initializes cluster centroids for K-means"""
 
 import numpy as np
 
@@ -19,7 +15,7 @@ def initialize(X, k):
     if type(k) != int or k <= 0:
         return None
     n, d = np.shape(X)
-    l = X.min(axis=0)
-    h = X.max(axis=0)
+    l = np.min(X, axis=0)
+    h = np.max(X, axis=0)
     centroids = np.random.uniform(l, h, size=(k, d))
     return centroids
